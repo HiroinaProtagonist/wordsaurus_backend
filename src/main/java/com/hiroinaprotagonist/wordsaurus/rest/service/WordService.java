@@ -1,16 +1,18 @@
 package com.hiroinaprotagonist.wordsaurus.rest.service;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.CombinedWordResponse;
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWResult;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.MediaType;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -63,17 +65,18 @@ public class WordService {
     }
 
     @Cacheable(value = "wordFromThesaurus", key="#word")
-    public String getWordFromThesaurus(@RequestParam String word) {
-        ResponseEntity<String> response = restClient.get()
+    public List<MWThesaurusWord> getWordFromThesaurus(@RequestParam String word) {
+        ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
                 .uri(MWScheme+"://"+MWHost+"/"+thesaurusPath+word+"?key="+thesaurusKey
                 )
                 .headers(headers -> {
 //                    headers.setContentType(MediaType.APPLICATION_JSON);
                 })
                 .retrieve()
-                .toEntity(String.class);
+                .toEntity(new ParameterizedTypeReference<>(){});
 
         log.info("Res: {}", response);
+        log.info("Stems: ", response);
         return response.getBody();
     }
 }

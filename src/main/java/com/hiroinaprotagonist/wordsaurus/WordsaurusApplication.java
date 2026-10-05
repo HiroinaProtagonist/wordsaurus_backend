@@ -1,11 +1,7 @@
 package com.hiroinaprotagonist.wordsaurus;
 
 import com.hiroinaprotagonist.wordsaurus.rest.controller.WordController;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.CombinedWordResponse;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWResult;
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.output.response.CloudWord;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.output.response.CloudWordList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -32,7 +28,7 @@ public class WordsaurusApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		String testWord = "pants";
 
-		ResponseEntity<String> coll_res = wordController
+		ResponseEntity<List<MWThesaurusWord>> coll_res = wordController
 				.getWordDataFromThesaurus(testWord);
 //		log.info("Res from word controller: {}", coll_res);
 

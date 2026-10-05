@@ -2,6 +2,7 @@ package com.hiroinaprotagonist.wordsaurus.rest.controller;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.CombinedWordResponse;
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWResult;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
 import com.hiroinaprotagonist.wordsaurus.rest.service.WordService;
 import com.hiroinaprotagonist.wordsaurus.utility.JsonUtil;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/wordsaurus")
@@ -33,11 +36,11 @@ public class WordController {
     }
 
     @GetMapping("/thesaurus/{word}")
-    public ResponseEntity<String> getWordDataFromThesaurus(
+    public ResponseEntity<List<MWThesaurusWord>> getWordDataFromThesaurus(
             @PathVariable String word) {
         log.info("Searching MW thesaurus for {}", word);
 
-        String thesResults = wordService.getWordFromThesaurus(word);
+        List<MWThesaurusWord> thesResults = wordService.getWordFromThesaurus(word);
 
 //        log.info("Retrieved thesaurus results: {}",
 //                objectMapper.writeValueAsString(thesResults));
