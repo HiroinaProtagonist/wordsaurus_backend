@@ -3,7 +3,9 @@ package com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwa
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.meta.AntArray;
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.meta.MWTarget;
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.meta.SynArray;
+import lombok.Builder;
 
+@Builder
 public record Meta(
         String id,
         String uuid,

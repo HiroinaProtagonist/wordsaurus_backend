@@ -2,6 +2,7 @@ package com.hiroinaprotagonist.wordsaurus.rest.service;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWResult;
 import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +18,11 @@ import java.util.List;
 @Service
 @Slf4j
 public class WordService {
-    @Autowired
-    private RestClient restClient;
+    private final RestClient restClient;
+
+    public WordService(RestClient restClient) {
+        this.restClient = restClient;
+    }
 
     @Value("${mw.urls.base.collegiate.url}")
     private String collegiateBaseUrl;
@@ -27,10 +31,10 @@ public class WordService {
     private String thesaurusBaseUrl;
 
     @Value("${mw.urls.scheme}")
-    private String MWScheme;
+    private String mWScheme;
 
     @Value("${mw.urls.host}")
-    private String MWHost;
+    private String mWHost;
 
     @Value("${mw.urls.base.thesaurus.path}")
     private String thesaurusPath;
@@ -48,15 +52,13 @@ public class WordService {
     public MWResult getWordFromCollegiate(@RequestParam String word) {
         ResponseEntity<MWResult> response = restClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .scheme(MWScheme)
-                        .host(MWHost)
+                        .scheme(mWScheme)
+                        .host(mWHost)
                         .path(collegiatePath + word)
                         .queryParam("key", collegiateKey)
                         .build()
                 )
-                .headers(headers -> {
-//                    headers.setContentType(MediaType.APPLICATION_JSON);
-                })
+                .headers(headers -> {})
                 .retrieve()
                 .toEntity(MWResult.class);
 
@@ -67,16 +69,13 @@ public class WordService {
     @Cacheable(value = "wordFromThesaurus", key="#word")
     public List<MWThesaurusWord> getWordFromThesaurus(@RequestParam String word) {
         ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
-                .uri(MWScheme+"://"+MWHost+"/"+thesaurusPath+word+"?key="+thesaurusKey
+                .uri(mWScheme +"://"+ mWHost +"/"+thesaurusPath+word+"?key="+thesaurusKey
                 )
-                .headers(headers -> {
-//                    headers.setContentType(MediaType.APPLICATION_JSON);
-                })
+                .headers(headers -> {})
                 .retrieve()
                 .toEntity(new ParameterizedTypeReference<>(){});
 
         log.info("Res: {}", response);
-        log.info("Stems: ", response);
         return response.getBody();
     }
 }
