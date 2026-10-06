@@ -1,9 +1,9 @@
 package com.hiroinaprotagonist.wordsaurus.test_data;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.Hwi;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.Meta;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.meta.MWTarget;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.Hwi;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.Meta;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.meta.MWTarget;
 
 public class TestData {
 

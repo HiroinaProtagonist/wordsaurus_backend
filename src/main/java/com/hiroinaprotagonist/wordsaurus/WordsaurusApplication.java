@@ -1,7 +1,7 @@
 package com.hiroinaprotagonist.wordsaurus;
 
 import com.hiroinaprotagonist.wordsaurus.rest.controller.WordController;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.MWThesaurusWord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

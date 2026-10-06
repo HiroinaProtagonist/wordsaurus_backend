@@ -1,10 +1,7 @@
 package com.hiroinaprotagonist.wordsaurus.rest.service;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWResult;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
-import lombok.Setter;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.MWThesaurusWord;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
@@ -49,8 +46,8 @@ public class WordService {
     private String thesaurusKey;
 
     @Cacheable(value = "wordFromCollegiate", key="#word")
-    public MWResult getWordFromCollegiate(@RequestParam String word) {
-        ResponseEntity<MWResult> response = restClient.get()
+    public List<MWThesaurusWord> getWordFromCollegiate(@RequestParam String word) {
+        ResponseEntity<List<MWThesaurusWord> > response = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme(mWScheme)
                         .host(mWHost)
@@ -60,7 +57,7 @@ public class WordService {
                 )
                 .headers(headers -> {})
                 .retrieve()
-                .toEntity(MWResult.class);
+                .toEntity(new ParameterizedTypeReference<>(){});
 
         log.info("Res: {}", response);
         return response.getBody();

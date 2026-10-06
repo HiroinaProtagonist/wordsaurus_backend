@@ -1,8 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.rest.controller;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.CombinedWordResponse;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWResult;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.MWThesaurusWord;
 import com.hiroinaprotagonist.wordsaurus.rest.service.WordService;
 import com.hiroinaprotagonist.wordsaurus.utility.JsonUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +18,15 @@ import java.util.List;
 public class WordController {
     private final WordService wordService;
 
-//    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
+//    ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/collegiate/{word}")
-    public ResponseEntity<MWResult> getWordDataFromCollegiate(
+    public ResponseEntity<List<MWThesaurusWord> > getWordDataFromCollegiate(
             @PathVariable String word) {
         log.info("Searching MW collegiate dictionary for {}", word);
 
-        MWResult dictResults = wordService.getWordFromCollegiate(word);
+        List<MWThesaurusWord>  dictResults = wordService.getWordFromCollegiate(word);
 
         log.info("Retrieved collegiate dictionary results: {}",
                 objectMapper.writeValueAsString(dictResults));

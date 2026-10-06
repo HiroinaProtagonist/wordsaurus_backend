@@ -1,6 +1,0 @@
-package com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.response.mwapi.def;
-
-public record Sseq(
-        Sensb[] sensb,
-        Sen[] sens
-) {}
