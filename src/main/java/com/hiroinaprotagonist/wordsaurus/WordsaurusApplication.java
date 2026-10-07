@@ -1,8 +1,12 @@
 package com.hiroinaprotagonist.wordsaurus;
 
+import com.hiroinaprotagonist.wordsaurus.rest.controller.RhymeBrainController;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.WordController;
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputRes;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputResItem;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,25 +19,33 @@ import java.util.List;
 @Slf4j
 public class WordsaurusApplication implements CommandLineRunner {
 	private final WordController wordController;
+	private final RhymeBrainController rhymeBrainController;
 
 	public static void main(String[] args) {
 		SpringApplication.run(WordsaurusApplication.class, args);
 	}
 
 	@Autowired
-	public WordsaurusApplication(WordController wordController) {
+	public WordsaurusApplication(WordController wordController,
+								 RhymeBrainController rhymeBrainController) {
 		this.wordController = wordController;
+		this.rhymeBrainController = rhymeBrainController;
 	}
 
-	public void run(String... args) throws Exception {
-		String testWord = "pants";
+	@Override
+	public void run(String @NonNull ... args) throws Exception {
+		String testWord = "fast";
 
-		ResponseEntity<List<MWThesaurusWord>> coll_res = wordController
-				.getWordDataFromThesaurus(testWord);
-//		log.info("Res from word controller: {}", coll_res);
-
-//		ResponseEntity<MWResult> thes_res = wordController
+//		ResponseEntity<List<MWThesaurusWord>> thesRes = wordController
 //				.getWordDataFromCollegiate(testWord);
-//		log.info("Res from word controller: {}", thes_res);
+//		log.info("Dictionary res from word controller: {}", thesRes);
+
+//		ResponseEntity<List<MWThesaurusWord>> collRes = wordController
+//				.getWordDataFromThesaurus(testWord);
+//		log.info("Thesaurus res from word controller: {}", collRes);
+
+		ResponseEntity<List<RhymeBrainOutputRes>> rbRes = rhymeBrainController
+				.getRhymesFromRB(testWord);
+		log.info("Rhymes returned from RhymeBrain controller: {}", rbRes);
 	}
 }

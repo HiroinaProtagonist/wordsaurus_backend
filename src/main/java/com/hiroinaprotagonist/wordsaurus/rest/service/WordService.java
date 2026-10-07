@@ -1,6 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.rest.service;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -47,7 +47,7 @@ public class WordService {
 
     @Cacheable(value = "wordFromCollegiate", key="#word")
     public List<MWThesaurusWord> getWordFromCollegiate(@RequestParam String word) {
-        ResponseEntity<List<MWThesaurusWord> > response = restClient.get()
+        ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme(mWScheme)
                         .host(mWHost)
@@ -66,7 +66,12 @@ public class WordService {
     @Cacheable(value = "wordFromThesaurus", key="#word")
     public List<MWThesaurusWord> getWordFromThesaurus(@RequestParam String word) {
         ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
-                .uri(mWScheme +"://"+ mWHost +"/"+thesaurusPath+word+"?key="+thesaurusKey
+                .uri(uriBuilder -> uriBuilder
+                        .scheme(mWScheme)
+                        .host(mWHost)
+                        .path(thesaurusPath + word)
+                        .queryParam("key", thesaurusKey)
+                        .build()
                 )
                 .headers(headers -> {})
                 .retrieve()

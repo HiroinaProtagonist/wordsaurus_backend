@@ -1,6 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.rest.controller;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.wordsapi.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
 import com.hiroinaprotagonist.wordsaurus.rest.service.WordService;
 import com.hiroinaprotagonist.wordsaurus.utility.JsonUtil;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/wordsaurus")
+@RequestMapping("/api/wordsaurus/mw")
 @RequiredArgsConstructor
 @Slf4j
 public class WordController {
