@@ -66,8 +66,7 @@ public class RhymeBrainService {
             log.info("Res: {}", res);
 
             if (Objects.nonNull(res.getBody())) {
-                outputWords = res
-                        .getBody()
+                outputWords = res.getBody()
                         .stream()
                         .map(RBRhymeResItem::setFlagVariables)
                         .map(RBtoResMapper.MAPPER_INSTANCE::rbToResMapper)

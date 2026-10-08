@@ -3,6 +3,7 @@ package com.hiroinaprotagonist.wordsaurus;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.RhymeBrainController;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.WordController;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWThesRes;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputRes;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputResItem;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +37,13 @@ public class WordsaurusApplication implements CommandLineRunner {
 	public void run(String @NonNull ... args) throws Exception {
 		String testWord = "fast";
 
-//		ResponseEntity<List<MWThesaurusWord>> thesRes = wordController
+//		ResponseEntity<List<MWThesRes>> thesRes = wordController
 //				.getWordDataFromCollegiate(testWord);
 //		log.info("Dictionary res from word controller: {}", thesRes);
 
-//		ResponseEntity<List<MWThesaurusWord>> collRes = wordController
-//				.getWordDataFromThesaurus(testWord);
-//		log.info("Thesaurus res from word controller: {}", collRes);
+		ResponseEntity<List<MWThesRes>> collRes = wordController
+				.getWordDataFromThesaurus(testWord);
+		log.info("Thesaurus res from word controller: {}", collRes);
 
 		ResponseEntity<List<RhymeBrainOutputRes>> rbRes = rhymeBrainController
 				.getRhymesFromRB(testWord);

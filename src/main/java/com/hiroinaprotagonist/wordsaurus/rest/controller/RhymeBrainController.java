@@ -16,7 +16,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/wordsaurus/rb")
+@RequestMapping("/api/rb/wordsaurus")
 @RequiredArgsConstructor
 @Slf4j
 public class RhymeBrainController {
