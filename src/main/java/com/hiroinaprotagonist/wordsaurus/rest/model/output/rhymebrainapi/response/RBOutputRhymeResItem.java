@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RhymeBrainOutputResItem {
+public class RBOutputRhymeResItem {
     private String word;
     private Integer freq;
     private Integer score;

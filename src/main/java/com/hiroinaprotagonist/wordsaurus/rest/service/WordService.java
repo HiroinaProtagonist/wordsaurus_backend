@@ -2,8 +2,8 @@ package com.hiroinaprotagonist.wordsaurus.rest.service;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.converter.MWtoResMapper;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWThesRes;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWThesResWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesRes;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesResWord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -51,8 +51,8 @@ public class WordService {
     private String thesaurusKey;
 
     @Cacheable(value = "wordFromCollegiate", key="#word")
-    public List<MWThesRes> getWordFromCollegiate(@RequestParam String word) {
-        List<MWThesResWord> outputWords = Collections.emptyList();
+    public List<MWOutputThesRes> getWordFromCollegiate(@RequestParam String word) {
+        List<MWOutputThesResWord> outputWords = Collections.emptyList();
 
         ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -79,7 +79,7 @@ public class WordService {
             log.error("Error encountered: {}", e.getMessage());
         }
 
-        return List.of(MWThesRes
+        return List.of(MWOutputThesRes
                 .builder()
                 .search(word)
                 .words(outputWords)
@@ -87,8 +87,8 @@ public class WordService {
     }
 
     @Cacheable(value = "wordFromThesaurus", key="#word")
-    public List<MWThesRes> getWordFromThesaurus(@RequestParam String word) {
-        List<MWThesResWord> outputWords = Collections.emptyList();
+    public List<MWOutputThesRes> getWordFromThesaurus(@RequestParam String word) {
+        List<MWOutputThesResWord> outputWords = Collections.emptyList();
 
         ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -117,7 +117,7 @@ public class WordService {
             log.error("Error encountered: {}", e.getMessage());
         }
 
-        return List.of(MWThesRes
+        return List.of(MWOutputThesRes
                 .builder()
                 .search(word)
                 .words(outputWords)

@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-public class MWThesRes {
+public class MWOutputThesRes {
     private String search;
-    private List<MWThesResWord> words;
+    private List<MWOutputThesResWord> words;
 }

@@ -1,9 +1,9 @@
 package com.hiroinaprotagonist.wordsaurus.rest.service;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.converter.RBtoResMapper;
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBRhymeResItem;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputRes;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBInputRhymeResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeRes;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeResItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -46,10 +45,10 @@ public class RhymeBrainService {
     private String rbPortFx;
 
     @Cacheable(value = "rhymes", key="#word")
-    public List<RhymeBrainOutputRes> getRhymes(@RequestParam String word) {
-        List<RhymeBrainOutputResItem> outputWords = Collections.emptyList();
+    public List<RBOutputRhymeRes> getRhymes(@RequestParam String word) {
+        List<RBOutputRhymeResItem> outputWords = Collections.emptyList();
 
-        ResponseEntity<List<RBRhymeResItem>> res = restClient.get()
+        ResponseEntity<List<RBInputRhymeResItem>> res = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme(rbScheme)
                         .host(rhymeBrainHost)
@@ -68,7 +67,7 @@ public class RhymeBrainService {
             if (Objects.nonNull(res.getBody())) {
                 outputWords = res.getBody()
                         .stream()
-                        .map(RBRhymeResItem::setFlagVariables)
+                        .map(RBInputRhymeResItem::setFlagVariables)
                         .map(RBtoResMapper.MAPPER_INSTANCE::rbToResMapper)
                         .toList();
                 }
@@ -76,21 +75,21 @@ public class RhymeBrainService {
             log.error("Error encountered: {}", e.getMessage());
         }
 
-        return List.of(RhymeBrainOutputRes
+        return List.of(RBOutputRhymeRes
                 .builder()
                 .search(word)
-                .words(outputWords)
+                .rhymes(outputWords)
                 .build());
     }
 
     @Cacheable(value = "word_info", key="#word")
-    public List<RhymeBrainOutputResItem> getWordInfo(@RequestParam String word) {
+    public List<RBOutputRhymeResItem> getWordInfo(@RequestParam String word) {
         log.info("Unimplemented word info method");
         return Collections.emptyList();
     }
 
     @Cacheable(value = "portmanteaus", key="#word")
-    public List<RhymeBrainOutputResItem> getPortmanteaus(@RequestParam String word) {
+    public List<RBOutputRhymeResItem> getPortmanteaus(@RequestParam String word) {
         log.info("Unimplemented portmanteau method");
         return Collections.emptyList();
     }

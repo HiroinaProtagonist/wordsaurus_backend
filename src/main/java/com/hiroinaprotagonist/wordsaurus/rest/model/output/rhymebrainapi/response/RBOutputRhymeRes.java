@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RhymeBrainOutputRes {
+public class RBOutputRhymeRes {
     private String search;
-    private List<RhymeBrainOutputResItem> words;
+    private List<RBOutputRhymeResItem> rhymes;
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class RBRhymeResItem {
+public class RBInputRhymeResItem {
     private String word;
     private Integer freq;
     private Integer score;
@@ -34,7 +34,7 @@ public class RBRhymeResItem {
         return flags.contains("c");
     }
 
-    public RBRhymeResItem setFlagVariables() {
+    public RBInputRhymeResItem setFlagVariables() {
         this.isOffensive = flagIsOffensive();
         this.isDictionaryWord = flagIsDictionaryWord();
         this.isKnownPronunciation = flagHasKnownPronunciation();

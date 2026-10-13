@@ -1,11 +1,9 @@
 package com.hiroinaprotagonist.wordsaurus;
 
+import com.hiroinaprotagonist.wordsaurus.rest.controller.CombinedController;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.RhymeBrainController;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.WordController;
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWThesRes;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputRes;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.CombinedWordResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +12,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 @SpringBootApplication
 @Slf4j
 public class WordsaurusApplication implements CommandLineRunner {
 	private final WordController wordController;
 	private final RhymeBrainController rhymeBrainController;
+	private final CombinedController combinedController;
 
 	public static void main(String[] args) {
 		SpringApplication.run(WordsaurusApplication.class, args);
@@ -28,9 +25,11 @@ public class WordsaurusApplication implements CommandLineRunner {
 
 	@Autowired
 	public WordsaurusApplication(WordController wordController,
-								 RhymeBrainController rhymeBrainController) {
+								 RhymeBrainController rhymeBrainController,
+								 CombinedController combinedController) {
 		this.wordController = wordController;
 		this.rhymeBrainController = rhymeBrainController;
+		this.combinedController = combinedController;
 	}
 
 	@Override
@@ -41,12 +40,15 @@ public class WordsaurusApplication implements CommandLineRunner {
 //				.getWordDataFromCollegiate(testWord);
 //		log.info("Dictionary res from word controller: {}", thesRes);
 
-		ResponseEntity<List<MWThesRes>> collRes = wordController
-				.getWordDataFromThesaurus(testWord);
-		log.info("Thesaurus res from word controller: {}", collRes);
+//		ResponseEntity<List<MWThesRes>> collRes = wordController
+//				.getWordDataFromThesaurus(testWord);
+//		log.info("Thesaurus res from word controller: {}", collRes);
+//
+//		ResponseEntity<List<RhymeBrainOutputRes>> rbRes = rhymeBrainController
+//				.getRhymesFromRB(testWord);
+//		log.info("Rhymes returned from RhymeBrain controller: {}", rbRes);
 
-		ResponseEntity<List<RhymeBrainOutputRes>> rbRes = rhymeBrainController
-				.getRhymesFromRB(testWord);
-		log.info("Rhymes returned from RhymeBrain controller: {}", rbRes);
+		ResponseEntity<CombinedWordResponse> combiRes = combinedController.getCombinedResponse(testWord);
+		log.info("Combined results returned for {}: {}", testWord, combiRes);
 	}
 }

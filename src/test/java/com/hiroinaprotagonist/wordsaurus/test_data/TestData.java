@@ -4,9 +4,8 @@ import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.Hwi;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.Meta;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.meta.MWTarget;
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBRhymeResItem;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputRes;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBInputRhymeResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeResItem;
 
 public class TestData {
 
@@ -84,8 +83,8 @@ public class TestData {
     }
 
     //RB Input
-    public static RBRhymeResItem getRBRhymeResItem() {
-        return RBRhymeResItem
+    public static RBInputRhymeResItem getRBRhymeResItem() {
+        return RBInputRhymeResItem
                 .builder()
                 .word(WORD)
                 .freq(HIGH_FREQ)
@@ -95,8 +94,8 @@ public class TestData {
     }
 
     //RB Output
-    public static RhymeBrainOutputResItem getRhymeBrainOutputResItem() {
-        return RhymeBrainOutputResItem
+    public static RBOutputRhymeResItem getRhymeBrainOutputResItem() {
+        return RBOutputRhymeResItem
                 .builder()
                 .word(WORD)
                 .freq(HIGH_FREQ)

@@ -1,7 +1,7 @@
 package com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.converter;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWThesResWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesResWord;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -28,5 +28,5 @@ public interface MWtoResMapper {
 
     @Mapping(source = "meta.offensive", target = "offensive")
     @Mapping(source = "hwi", target = "hwi")
-    public MWThesResWord mwToResMapper(MWThesaurusWord input);
+    public MWOutputThesResWord mwToResMapper(MWThesaurusWord input);
 }

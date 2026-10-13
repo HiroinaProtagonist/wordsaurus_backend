@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MWThesResWord {
+public class MWOutputThesResWord {
     private Meta meta;
     private String metaId;
     private String metaUuid;

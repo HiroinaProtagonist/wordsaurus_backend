@@ -1,7 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.rest.controller;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWThesRes;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesRes;
 import com.hiroinaprotagonist.wordsaurus.rest.service.WordService;
 import com.hiroinaprotagonist.wordsaurus.utility.JsonUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +22,11 @@ public class WordController {
 //    ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/collegiate/{word}")
-    public ResponseEntity<List<MWThesRes> > getWordDataFromCollegiate(
+    public ResponseEntity<List<MWOutputThesRes> > getWordDataFromCollegiate(
             @PathVariable String word) {
         log.info("Searching MW collegiate dictionary for {}", word);
 
-        List<MWThesRes>  dictResults = wordService.getWordFromCollegiate(word);
+        List<MWOutputThesRes>  dictResults = wordService.getWordFromCollegiate(word);
 
         log.info("Retrieved collegiate dictionary results: {}",
                 objectMapper.writeValueAsString(dictResults));
@@ -35,11 +34,11 @@ public class WordController {
     }
 
     @GetMapping("/thesaurus/{word}")
-    public ResponseEntity<List<MWThesRes>> getWordDataFromThesaurus(
+    public ResponseEntity<List<MWOutputThesRes>> getWordDataFromThesaurus(
             @PathVariable String word) {
         log.info("Searching MW thesaurus for {}", word);
 
-        List<MWThesRes> thesResults = wordService.getWordFromThesaurus(word);
+        List<MWOutputThesRes> thesResults = wordService.getWordFromThesaurus(word);
 
 //        log.info("Retrieved thesaurus results: {}",
 //                objectMapper.writeValueAsString(thesResults));

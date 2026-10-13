@@ -1,7 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.rest.controller;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputRes;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeRes;
 import com.hiroinaprotagonist.wordsaurus.rest.service.RhymeBrainService;
 import com.hiroinaprotagonist.wordsaurus.utility.JsonUtil;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +24,11 @@ public class RhymeBrainController {
     ObjectMapper objectMapper = JsonUtil.getObjectMapper();
 
     @GetMapping("/rhyming/{word}")
-    public ResponseEntity<List<RhymeBrainOutputRes>> getRhymesFromRB(
+    public ResponseEntity<List<RBOutputRhymeRes>> getRhymesFromRB(
             @PathVariable String word) {
         log.info("Get rhymes for {}", word);
 
-        List<RhymeBrainOutputRes> rhymes = rhymeBrainService.getRhymes(word);
+        List<RBOutputRhymeRes> rhymes = rhymeBrainService.getRhymes(word);
 
         return ResponseEntity.ok(rhymes);
     }

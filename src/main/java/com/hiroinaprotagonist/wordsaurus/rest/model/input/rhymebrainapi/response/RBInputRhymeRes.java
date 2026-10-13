@@ -3,6 +3,6 @@ package com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.respons
 import lombok.Builder;
 
 @Builder
-public record RBRhymeRes() {
+public record RBInputRhymeRes() {
 
 }

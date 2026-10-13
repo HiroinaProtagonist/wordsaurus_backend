@@ -1,7 +1,7 @@
 package com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.converter;
 
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBRhymeResItem;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RhymeBrainOutputResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBInputRhymeResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeResItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -18,5 +18,5 @@ public interface RBtoResMapper {
     @Mapping(source = "isOffensive", target = "isOffensive")
     @Mapping(source = "isDictionaryWord", target = "isDictionaryWord")
     @Mapping(source = "isKnownPronunciation", target = "isKnownPronunciation")
-    public RhymeBrainOutputResItem rbToResMapper(RBRhymeResItem input);
+    public RBOutputRhymeResItem rbToResMapper(RBInputRhymeResItem input);
 }

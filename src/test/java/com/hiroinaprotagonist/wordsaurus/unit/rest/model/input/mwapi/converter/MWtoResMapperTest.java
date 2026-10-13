@@ -3,7 +3,7 @@ package com.hiroinaprotagonist.wordsaurus.unit.rest.model.input.mwapi.converter;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.converter.MWtoResMapper;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWThesResWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesResWord;
 import org.junit.jupiter.api.Test;
 
 import static com.hiroinaprotagonist.wordsaurus.test_data.TestData.*;
@@ -18,7 +18,7 @@ class MWtoResMapperTest {
         MWThesaurusWord mapInput = getInputMWThesaurusWord();
 
         //when
-        MWThesResWord mapOutput = MWtoResMapper.MAPPER_INSTANCE.mwToResMapper(mapInput);
+        MWOutputThesResWord mapOutput = MWtoResMapper.MAPPER_INSTANCE.mwToResMapper(mapInput);
 
         //then
         assertEquals(FIRST_ANTONYM, mapInput.meta().ants()[0][0]);
