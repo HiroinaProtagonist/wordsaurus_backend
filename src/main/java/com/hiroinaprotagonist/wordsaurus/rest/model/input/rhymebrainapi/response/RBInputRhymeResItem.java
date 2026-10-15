@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static java.util.Objects.isNull;
+
 @Builder
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,21 +25,24 @@ public class RBInputRhymeResItem {
     private Boolean isKnownPronunciation;
 
     public boolean flagIsOffensive() {
+        if(isNull(flags)) { return false; }
         return flags.contains("a");
     }
 
     public boolean flagIsDictionaryWord() {
+        if(isNull(flags)) { return false; }
         return flags.contains("b");
     }
 
-    public boolean flagHasKnownPronunciation() {
+    public boolean flagIsKnownPronunciation() {
+        if(isNull(flags)) { return false; }
         return flags.contains("c");
     }
 
     public RBInputRhymeResItem setFlagVariables() {
-        this.isOffensive = flagIsOffensive();
-        this.isDictionaryWord = flagIsDictionaryWord();
-        this.isKnownPronunciation = flagHasKnownPronunciation();
+        this.isOffensive = this.flagIsOffensive();
+        this.isDictionaryWord = this.flagIsDictionaryWord();
+        this.isKnownPronunciation = this.flagIsKnownPronunciation();
         return this;    //for use in map in RhymeBrainController, can't return void
     }
 }

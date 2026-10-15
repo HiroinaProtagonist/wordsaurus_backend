@@ -1,11 +1,20 @@
-package com.hiroinaprotagonist.wordsaurus.test_data;
+package com.hiroinaprotagonist.wordsaurus.data;
 
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.converter.MWtoResMapper;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.Hwi;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.Meta;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.meta.MWTarget;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.converter.RBtoResMapper;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBInputRhymeResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesRes;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesResWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeRes;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeResItem;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TestData {
 
@@ -65,6 +74,20 @@ public class TestData {
                 .build();
     }
 
+    public static Meta getMWMetaNullValues() {
+        return Meta.builder()
+                .id(ID_STRING)
+                .uuid(UUID_STRING)
+                .src(SRC_STRING)
+                .section(SECTION_STRING)
+                .stems(new String[]{FIRST_STRING_OF_RELATED_WORDS,
+                        SECOND_STRING_OF_RELATED_WORDS})
+                .syns(new String[][]{{FIRST_SYNONYM, SECOND_SYNONYM, THIRD_SYNONYM}})
+                .ants(new String[][]{{FIRST_ANTONYM, SECOND_ANTONYM, THIRD_ANTONYM}})
+                .target(getMWTarget())
+                .build();
+    }
+
     public static Hwi getHwi() {
         return Hwi.builder()
                 .hw(SEARCH_WORD_OR_RELATED_STRING)
@@ -82,6 +105,46 @@ public class TestData {
                 .build();
     }
 
+    public static MWThesaurusWord getInputMWThesaurusWordShortDefNull() {
+        return MWThesaurusWord
+                .builder()
+                .meta(getMWMeta())
+                .hwi(getHwi())
+                .fl(PART_OF_SPEECH_STRING)
+                .sls(new String[]{VERB_TENSE_STRING_OF_D_LINK_PANT_PANT})
+                .build();
+    }
+
+    public static MWThesaurusWord getInputMWThesaurusWordMetaNull() {
+        return MWThesaurusWord
+                .builder()
+                .meta(null)
+                .hwi(getHwi())
+                .fl(PART_OF_SPEECH_STRING)
+                .sls(new String[]{VERB_TENSE_STRING_OF_D_LINK_PANT_PANT})
+                .shortDef(new String[]{SHORT_DEFINITION_STRING})
+                .build();
+    }
+
+    public static MWOutputThesResWord getMWOutputThesResWord() {
+        return MWtoResMapper.MAPPER_INSTANCE.mwToResMapper(getInputMWThesaurusWord());
+    }
+
+    public static MWOutputThesRes getMWOutputThesRes() {
+        return MWOutputThesRes.builder()
+                .search(WORD)
+                .words(Arrays.asList(getMWOutputThesResWord(),
+                        getMWOutputThesResWord()))
+                .build();
+    }
+
+    //MW Service output
+    public static List<MWOutputThesRes> getMWOutputThesResList() {
+        return Arrays.asList(getMWOutputThesRes(),
+                getMWOutputThesRes());
+    }
+
+
     //RB Input
     public static RBInputRhymeResItem getRBRhymeResItem() {
         return RBInputRhymeResItem
@@ -91,6 +154,19 @@ public class TestData {
                 .score(HIGH_SCORE)
                 .flags(ALL_FLAGS)
                 .build();
+    }
+
+    //RB Input
+    public static RBInputRhymeResItem getRBRhymeResItemVariablesSet() {
+        RBInputRhymeResItem item = RBInputRhymeResItem
+                .builder()
+                .word(WORD)
+                .freq(HIGH_FREQ)
+                .score(HIGH_SCORE)
+                .flags(ALL_FLAGS)
+                .build();
+
+        return item.setFlagVariables();
     }
 
     //RB Output
@@ -106,4 +182,24 @@ public class TestData {
                 .isKnownPronunciation(true)
                 .build();
     }
+
+    public static List<RBOutputRhymeResItem> getRBOutputRhymeResItemList() {
+        return Arrays.asList(getRhymeBrainOutputResItem(),
+                getRhymeBrainOutputResItem());
+    }
+
+    public static RBOutputRhymeRes getRBOutputRhymeRes() {
+        return RBOutputRhymeRes
+                .builder()
+                .search(WORD)
+                .rhymes(getRBOutputRhymeResItemList())
+                .build();
+    }
+
+    //RB Service Rhymes output
+    public static List<RBOutputRhymeRes> getRBRhymeServiceOutput() {
+        return Arrays.asList(getRBOutputRhymeRes(),
+                getRBOutputRhymeRes());
+    }
+
 }

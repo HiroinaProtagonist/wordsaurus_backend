@@ -62,4 +62,10 @@ public class CombinedController {
 
         return ResponseEntity.ok(output);
     }
+
+//    public Future<List<RBOutputRhymeRes>> rhymes(Callable<List<RBOutputRhymeRes>> rhymeCall) {
+//
+//    }
+
+
 }

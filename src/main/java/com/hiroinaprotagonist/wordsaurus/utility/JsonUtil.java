@@ -6,4 +6,6 @@ import tools.jackson.databind.ObjectMapper;
 public class JsonUtil {
     @Getter
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private JsonUtil() {}
 }
