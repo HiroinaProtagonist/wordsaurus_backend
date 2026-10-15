@@ -25,6 +25,7 @@ import java.util.concurrent.*;
 public class CombinedController {
     private final WordService wordService;
     private final RhymeBrainService rhymeBrainService;
+    private final ExecutorService executorService;
 
     ObjectMapper objectMapper = JsonUtil.getObjectMapper();
 
@@ -35,9 +36,6 @@ public class CombinedController {
 
         log.info("Get combined results for {}", word);
 
-        //thread for words and one for rhymes
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
-
         Callable<List<RBOutputRhymeRes>> rhymeCall = () ->
                 rhymeBrainService.getRhymes(word);
 
@@ -45,13 +43,12 @@ public class CombinedController {
                 wordService.getWordFromThesaurus(word);
 
         try {
-            Future<List<RBOutputRhymeRes>> rhymes = executorService.submit(rhymeCall);
-            Future<List<MWOutputThesRes>> words = executorService.submit(wordCall);
+            Future<List<RBOutputRhymeRes>> rhymes = getFuture(rhymeCall);
+            Future<List<MWOutputThesRes>> words = getFuture(wordCall);
             output.setSearch(word);
 
             output.setRhymes(rhymes.get());
             output.setWords(words.get());
-
 
         } catch (ExecutionException | InterruptedException e) {
             log.error("Error: {}; Error class: {}",
@@ -63,9 +60,7 @@ public class CombinedController {
         return ResponseEntity.ok(output);
     }
 
-//    public Future<List<RBOutputRhymeRes>> rhymes(Callable<List<RBOutputRhymeRes>> rhymeCall) {
-//
-//    }
-
-
+    public <T> Future<T> getFuture(Callable<T> callable) {
+        return executorService.submit(callable);
+    }
 }

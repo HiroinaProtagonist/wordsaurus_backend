@@ -2,56 +2,62 @@ package com.hiroinaprotagonist.wordsaurus.unit.rest.controller;
 
 import com.hiroinaprotagonist.wordsaurus.rest.controller.CombinedController;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.CombinedWordResponse;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeRes;
+
 import com.hiroinaprotagonist.wordsaurus.rest.service.RhymeBrainService;
 import com.hiroinaprotagonist.wordsaurus.rest.service.WordService;
-import lombok.Data;
-import org.junit.After;
-import org.junit.Before;
+
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MediaType;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.client.RestClient;
 
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
-import static com.hiroinaprotagonist.wordsaurus.data.TestData.*;
-import static java.lang.Long.sum;
+import static com.hiroinaprotagonist.wordsaurus.data.TestData.getMWOutputThesResList;
+import static com.hiroinaprotagonist.wordsaurus.data.TestData.getRBRhymeServiceOutput;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
 import java.util.concurrent.*;
 
-//@ExtendWith(MockitoExtension.class)
+@WebMvcTest(CombinedController.class)
 class CombinedControllerTest {
 
-    @Mock
-    private RestClient restClient = RestClient.create();
+    @Autowired
+    private MockMvc mockMvc;
 
-    @Mock
-    private ExecutorService executorService;
+//    @Mock
+//    private RestClient restClient = RestClient.create();
+//
+//    @Mock
+//    private ExecutorService executorService;
+//
+//    @MockitoBean
+//    private WordService wordService = new WordService(restClient);
+//
+//    @MockitoBean
+//    private RhymeBrainService rhymeBrainService = new RhymeBrainService(restClient);
 
-    @Spy
-    private WordService wordService = new WordService(restClient);
-
-    @Spy
-    private RhymeBrainService rhymeBrainService = new RhymeBrainService(restClient);
-
-    private CombinedController combinedController;
+//    private CombinedController combinedController;
 
     private AutoCloseable closeable;
 
     @BeforeEach
     public void setup() {
-        combinedController = new CombinedController(wordService, rhymeBrainService);
+//        combinedController = new CombinedController(
+//                wordService,
+//                rhymeBrainService,
+//                executorService);
         closeable = MockitoAnnotations.openMocks(this);
     }
 
@@ -61,28 +67,30 @@ class CombinedControllerTest {
     }
 
     @Test
-    void positive_getCombinedResponse() throws ExecutionException, InterruptedException {
-        String word = "test";
+    void positive_getCombinedResponse() throws Exception {
 
         //given
-        ResponseEntity<CombinedWordResponse> res =
-                combinedController.getCombinedResponse("test");
+        String word = "test";
+
 
         //when
-        when(executorService.submit())
-                .thenReturn();
-
-        Future<> rhymeFuture = executorService.submit();
-
         when(wordService.getWordFromThesaurus(anyString()))
                 .thenReturn(getMWOutputThesResList());
 
         when(rhymeBrainService.getRhymes(anyString()))
                 .thenReturn(getRBRhymeServiceOutput());
 
-        //then
-        assertTrue(res.getStatusCode().is2xxSuccessful());
+//        ResponseEntity<CombinedWordResponse> res =
+//                combinedController.getCombinedResponse("test");
 
+        mockMvc.perform(get("/api/wordsaurus/{word}", word)
+                .accept(String.valueOf(MediaType.APPLICATION_JSON)));
+//                        .andExpect(status().isOk()));
+
+
+
+        //then
+//        assertTrue(res.getStatusCode().is2xxSuccessful());
     }
 
     @Test
@@ -96,7 +104,7 @@ class CombinedControllerTest {
 //        when(executorService1.submit(c))
 //                .thenReturn(2305843005992468481L);
 
-//        Future<Long> future = executorService1.submit(c);
+        Future<Long> future = executorService1.submit(c);
         Long test = future.get();
         assertEquals(2305843005992468481L, test);
 
