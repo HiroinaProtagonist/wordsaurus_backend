@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 
 @SpringBootApplication
 @Slf4j
-public class WordsaurusApplication {
-//		implements CommandLineRunner {
+public class WordsaurusApplication
+		implements CommandLineRunner {
 	private final WordController wordController;
 	private final RhymeBrainController rhymeBrainController;
 	private final CombinedController combinedController;
@@ -33,9 +33,9 @@ public class WordsaurusApplication {
 		this.combinedController = combinedController;
 	}
 
-//	@Override
-//	public void run(String @NonNull ... args) throws Exception {
-//		String testWord = "fast";
+	@Override
+	public void run(String @NonNull ... args) throws Exception {
+		String testWord = "fast";
 //
 ////		ResponseEntity<List<MWThesRes>> thesRes = wordController
 ////				.getWordDataFromCollegiate(testWord);
@@ -49,7 +49,7 @@ public class WordsaurusApplication {
 ////				.getRhymesFromRB(testWord);
 ////		log.info("Rhymes returned from RhymeBrain controller: {}", rbRes);
 //
-////		ResponseEntity<CombinedWordResponse> combiRes = combinedController.getCombinedResponse(testWord);
-////		log.info("Combined results returned for {}: {}", testWord, combiRes);
-//	}
+//		ResponseEntity<CombinedWordResponse> combiRes = combinedController.getCombinedResponse(testWord);
+//		log.info("Combined results returned for {}: {}", testWord, combiRes);
+	}
 }

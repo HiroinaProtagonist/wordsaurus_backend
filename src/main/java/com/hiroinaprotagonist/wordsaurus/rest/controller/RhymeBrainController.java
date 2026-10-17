@@ -21,7 +21,7 @@ import java.util.List;
 public class RhymeBrainController {
     private final RhymeBrainService rhymeBrainService;
 
-    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
+//    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
 
     @GetMapping("/rhyming/{word}")
     public ResponseEntity<List<RBOutputRhymeRes>> getRhymesFromRB(

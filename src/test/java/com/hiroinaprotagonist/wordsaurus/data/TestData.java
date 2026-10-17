@@ -18,6 +18,10 @@ import java.util.List;
 
 public class TestData {
 
+    //TEST WORDS
+    public static final String PANTS = "pants";
+    public static final String OBFUSCATE = "obfuscate";
+
     //MW Constants
     public static final String SHORT_DEFINITION_STRING = "short definition string";
     public static final String VERB_TENSE_STRING_OF_D_LINK_PANT_PANT = "Verb tense string of {d_link|pant|pant}";
@@ -105,6 +109,11 @@ public class TestData {
                 .build();
     }
 
+    public static List<MWThesaurusWord> getInputMWThesaurusWordList() {
+        return Arrays.asList(getInputMWThesaurusWord(),
+                getInputMWThesaurusWord());
+    }
+
     public static MWThesaurusWord getInputMWThesaurusWordShortDefNull() {
         return MWThesaurusWord
                 .builder()
@@ -144,6 +153,15 @@ public class TestData {
                 getMWOutputThesRes());
     }
 
+    public static String getMWJson(String word){
+        return switch (word) {
+            case "obfuscate" ->
+                    "[{\"meta\":{\"id\":\"obfuscate\",\"uuid\":\"78c30621-1900-4de0-9a08-7bcdffbd6212\",\"src\":\"coll_thes\",\"section\":\"alpha\",\"target\":{\"tuuid\":\"9ee89e5d-2662-4c2d-9537-7620be175b76\",\"tsrc\":\"collegiate\"},\"stems\":[\"obfuscate\",\"obfuscated\",\"obfuscates\",\"obfuscating\",\"obfuscation\",\"obfuscations\",\"obfuscatory\"],\"syns\":[[\"becloud\",\"befog\",\"blur\",\"cloud\",\"confuse\",\"fog\",\"muddy\"]],\"ants\":[[\"clarify\",\"clear (up)\",\"illuminate\"]],\"offensive\":false},\"hwi\":{\"hw\":\"obfuscate\"},\"fl\":\"verb\",\"def\":[{\"sseq\":[[[\"sense\",{\"dt\":[[\"text\",\"to make (something) unclear to the understanding \"],[\"vis\",[{\"t\":\"irrelevant matters that only serve to {it}obfuscate{\\/it} the fundamental issue of guilt or innocence\"}]]],\"syn_list\":[[{\"wd\":\"becloud\"},{\"wd\":\"befog\"},{\"wd\":\"blur\"},{\"wd\":\"cloud\"},{\"wd\":\"confuse\"},{\"wd\":\"fog\"},{\"wd\":\"muddy\"}]],\"rel_list\":[[{\"wd\":\"complicate\"},{\"wd\":\"perplex\"},{\"wd\":\"sophisticate\"}],[{\"wd\":\"entangle\"},{\"wd\":\"snarl\"},{\"wd\":\"tangle\"}],[{\"wd\":\"disarrange\"},{\"wd\":\"disarray\"},{\"wd\":\"discompose\"},{\"wd\":\"dishevel\"},{\"wd\":\"disorder\"},{\"wd\":\"disrupt\"},{\"wd\":\"disturb\"},{\"wd\":\"jumble\"},{\"wd\":\"mess (up)\"},{\"wd\":\"mix (up)\"},{\"wd\":\"muddle\"},{\"wd\":\"scramble\"},{\"wd\":\"shuffle\"},{\"wd\":\"tousle\"},{\"wd\":\"upset\"}]],\"near_list\":[[{\"wd\":\"simplify\"},{\"wd\":\"streamline\"}],[{\"wd\":\"disentangle\"},{\"wd\":\"straighten (out)\"},{\"wd\":\"undo\"},{\"wd\":\"unravel\"},{\"wd\":\"unscramble\"},{\"wd\":\"untangle\"}],[{\"wd\":\"decipher\"},{\"wd\":\"decode\"}],[{\"wd\":\"analyze\"},{\"wd\":\"break down\"}]],\"ant_list\":[[{\"wd\":\"clarify\"},{\"wd\":\"clear (up)\"},{\"wd\":\"illuminate\"}]]}]]]}],\"shortdef\":[\"to make (something) unclear to the understanding\"]}]";
+            case "pants" -> "pants";
+            default -> "none";
+        };
+    }
+
 
     //RB Input
     public static RBInputRhymeResItem getRBRhymeResItem() {
@@ -167,6 +185,11 @@ public class TestData {
                 .build();
 
         return item.setFlagVariables();
+    }
+
+    public static List<RBInputRhymeResItem> getRBInputRhymeResItemList() {
+        return Arrays.asList(getRBRhymeResItem(),
+                getRBRhymeResItem());
     }
 
     //RB Output
@@ -197,7 +220,7 @@ public class TestData {
     }
 
     //RB Service Rhymes output
-    public static List<RBOutputRhymeRes> getRBRhymeServiceOutput() {
+    public static List<RBOutputRhymeRes> getRBOutputRhymeResList() {
         return Arrays.asList(getRBOutputRhymeRes(),
                 getRBOutputRhymeRes());
     }

@@ -1,7 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.unit.rest.controller;
 
 import com.hiroinaprotagonist.wordsaurus.rest.controller.CombinedController;
-import com.hiroinaprotagonist.wordsaurus.rest.model.output.CombinedWordResponse;
 
 import com.hiroinaprotagonist.wordsaurus.rest.service.RhymeBrainService;
 import com.hiroinaprotagonist.wordsaurus.rest.service.WordService;
@@ -10,54 +9,68 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MediaType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.internal.matchers.Any;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.concurrent.ExecutionException;
 
-import static com.hiroinaprotagonist.wordsaurus.data.TestData.getMWOutputThesResList;
-import static com.hiroinaprotagonist.wordsaurus.data.TestData.getRBRhymeServiceOutput;
+import static com.hiroinaprotagonist.wordsaurus.data.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.concurrent.*;
 
 @WebMvcTest(CombinedController.class)
+//@SpringBootTest
+//@AutoConfigureMockMvc
+//@ExtendWith(SpringExtension.class)
 class CombinedControllerTest {
+
+    @Autowired
+    private WebApplicationContext wac;
 
     @Autowired
     private MockMvc mockMvc;
 
-//    @Mock
-//    private RestClient restClient = RestClient.create();
-//
-//    @Mock
-//    private ExecutorService executorService;
-//
-//    @MockitoBean
-//    private WordService wordService = new WordService(restClient);
-//
-//    @MockitoBean
-//    private RhymeBrainService rhymeBrainService = new RhymeBrainService(restClient);
+    @MockitoBean
+    private RestClient restClient = RestClient.create();
 
-//    private CombinedController combinedController;
+    @MockitoBean
+    private ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+    @MockitoBean
+    private WordService wordService = new WordService(restClient);
+
+    @MockitoBean
+    private RhymeBrainService rhymeBrainService = new RhymeBrainService(restClient);
 
     private AutoCloseable closeable;
 
     @BeforeEach
     public void setup() {
-//        combinedController = new CombinedController(
-//                wordService,
-//                rhymeBrainService,
-//                executorService);
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new CombinedController(
+                        wordService,
+                        rhymeBrainService,
+                        executorService))
+                .build();
+
         closeable = MockitoAnnotations.openMocks(this);
     }
 
@@ -68,50 +81,42 @@ class CombinedControllerTest {
 
     @Test
     void positive_getCombinedResponse() throws Exception {
-
-        //given
-        String word = "test";
-
-
-        //when
-        when(wordService.getWordFromThesaurus(anyString()))
-                .thenReturn(getMWOutputThesResList());
-
-        when(rhymeBrainService.getRhymes(anyString()))
-                .thenReturn(getRBRhymeServiceOutput());
-
-//        ResponseEntity<CombinedWordResponse> res =
-//                combinedController.getCombinedResponse("test");
-
-        mockMvc.perform(get("/api/wordsaurus/{word}", word)
-                .accept(String.valueOf(MediaType.APPLICATION_JSON)));
-//                        .andExpect(status().isOk()));
-
-
-
-        //then
-//        assertTrue(res.getStatusCode().is2xxSuccessful());
+        mockMvc.perform(get("/api/wordsaurus/{word}", PANTS)
+                        .accept(String.valueOf(MediaType.APPLICATION_JSON)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"));
     }
+
+    @Test
+    void negative_getCombinedResponse() throws Exception {
+        mockMvc.perform(get("/api/wordsaurus/{word}", "")
+                        .accept(String.valueOf(MediaType.APPLICATION_JSON)))
+                .andExpect(status().is4xxClientError());
+    }
+
+//    @Test
+//    void negative_interruptedException_getCombinedResponse() throws Exception {
+//        Mockito.when(executorService.submit(Any::new)).thenThrow(new InterruptedException());
+//
+//        mockMvc.perform(get("/api/wordsaurus/{word}", PANTS)
+//                        .accept(String.valueOf(MediaType.APPLICATION_JSON)))
+//                .andExpect(sta)
+//                .andExpect(content().contentType("application/json"));
+//    }
 
     @Test
     void positive_sample_thread_test() throws ExecutionException, InterruptedException {
         ExecutorService executorService1 = Executors.newSingleThreadExecutor();
+
         MyCallable c = new MyCallable();
-
-//        executorService1.submit(c);
-//        assertTrue(c.getRes() > 0L);
-
-//        when(executorService1.submit(c))
-//                .thenReturn(2305843005992468481L);
-
-        Future<Long> future = executorService1.submit(c);
-        Long test = future.get();
+        Future<Long> callable_future = executorService1.submit(c);
+        Long test = callable_future.get();
         assertEquals(2305843005992468481L, test);
 
-//        MyRunnable r = new MyRunnable();
-//        Future<?> future = executorService1.submit(r);
-//        future.get();
-//        assertEquals(2305843005992468481L, r.getResult());
+        MyRunnable r = new MyRunnable();
+        Future<?> runnable_future = executorService1.submit(r);
+        runnable_future.get();
+        assertEquals(2305843005992468481L, r.getResult());
 
     }
 

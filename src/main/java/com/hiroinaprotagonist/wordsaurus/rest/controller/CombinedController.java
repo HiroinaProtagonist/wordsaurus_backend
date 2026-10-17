@@ -27,7 +27,7 @@ public class CombinedController {
     private final RhymeBrainService rhymeBrainService;
     private final ExecutorService executorService;
 
-    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
+//    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
 
     @GetMapping("/{word}")
     public ResponseEntity<CombinedWordResponse> getCombinedResponse(
@@ -54,7 +54,7 @@ public class CombinedController {
             log.error("Error: {}; Error class: {}",
                     e.getMessage(),
                     e.getClass().getSimpleName());
-            throw e;
+//            throw e;
         }
 
         return ResponseEntity.ok(output);
