@@ -1,5 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.db.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -7,6 +8,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.UUID;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @Embeddable
