@@ -81,7 +81,7 @@ class CombinedControllerTest {
 
     @Test
     void positive_getCombinedResponse() throws Exception {
-        mockMvc.perform(get("/api/wordsaurus/{word}", PANTS)
+        mockMvc.perform(get("/api/combi/wordsaurus/{word}", PANTS)
                         .accept(String.valueOf(MediaType.APPLICATION_JSON)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"));
@@ -89,7 +89,7 @@ class CombinedControllerTest {
 
     @Test
     void negative_getCombinedResponse() throws Exception {
-        mockMvc.perform(get("/api/wordsaurus/{word}", "")
+        mockMvc.perform(get("/api/combi/wordsaurus/{word}", "")
                         .accept(String.valueOf(MediaType.APPLICATION_JSON)))
                 .andExpect(status().is4xxClientError());
     }

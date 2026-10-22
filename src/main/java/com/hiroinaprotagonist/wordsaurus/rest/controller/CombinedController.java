@@ -29,12 +29,12 @@ public class CombinedController {
 
 //    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
 
-    @GetMapping("/{word}")
+    @GetMapping("/combi/{word}")
     public ResponseEntity<CombinedWordResponse> getCombinedResponse(
             @PathVariable String word) throws ExecutionException, InterruptedException {
         CombinedWordResponse output = new CombinedWordResponse();
 
-        log.info("Get combined results for {}", word);
+//        log.info("Get combined results for {}", word);
 
         Callable<List<RBOutputRhymeRes>> rhymeCall = () ->
                 rhymeBrainService.getRhymes(word);
@@ -47,6 +47,8 @@ public class CombinedController {
             Future<List<MWOutputThesRes>> words = getFuture(wordCall);
             output.setSearch(word);
 
+
+
             output.setRhymes(rhymes.get());
             output.setWords(words.get());
 
@@ -57,6 +59,7 @@ public class CombinedController {
 //            throw e;
         }
 
+        log.info("Combined results: {}", output);
         return ResponseEntity.ok(output);
     }
 

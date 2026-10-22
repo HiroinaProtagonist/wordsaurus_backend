@@ -12,7 +12,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/mw/wordsaurus")
+@RequestMapping("/api/mw")
 @RequiredArgsConstructor
 @Slf4j
 public class WordController {
