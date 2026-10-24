@@ -1,5 +1,6 @@
 package com.hiroinaprotagonist.wordsaurus.unit.rest.controller;
 
+import com.hiroinaprotagonist.wordsaurus.config.ExecutorServiceConfig;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.CombinedController;
 
 import com.hiroinaprotagonist.wordsaurus.rest.service.RhymeBrainService;
@@ -36,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.concurrent.*;
 
 @WebMvcTest(CombinedController.class)
-//@SpringBootTest
-//@AutoConfigureMockMvc
+@SpringBootTest
+@AutoConfigureMockMvc
 //@ExtendWith(SpringExtension.class)
 class CombinedControllerTest {
 
@@ -51,13 +52,14 @@ class CombinedControllerTest {
     private RestClient restClient = RestClient.create();
 
     @MockitoBean
-    private ExecutorService executorService = Executors.newFixedThreadPool(2);
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     @MockitoBean
     private WordService wordService = new WordService(restClient);
 
     @MockitoBean
-    private RhymeBrainService rhymeBrainService = new RhymeBrainService(restClient);
+    private RhymeBrainService rhymeBrainService
+            = new RhymeBrainService(restClient, executorService);
 
     private AutoCloseable closeable;
 

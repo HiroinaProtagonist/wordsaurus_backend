@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class MWResult {
-    public MWThesaurusWord[] words;
+    public MWInputThesResWord[] words;
 }

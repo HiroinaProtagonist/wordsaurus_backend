@@ -40,8 +40,8 @@ public class WordController {
 
         List<MWOutputThesRes> thesResults = wordService.getWordFromThesaurus(word);
 
-//        log.info("Retrieved thesaurus results: {}",
-//                objectMapper.writeValueAsString(thesResults));
+        log.info("Retrieved thesaurus results: {}",
+                objectMapper.writeValueAsString(thesResults));
         return ResponseEntity.ok(thesResults);
     }
 }

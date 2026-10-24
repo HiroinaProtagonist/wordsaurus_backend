@@ -10,5 +10,5 @@ public record Dt(
 //        Ri ri,
 //        Snote snote,
 //        Uns uns,
-        Vis vis
+        Vis[] vis
 ) {}

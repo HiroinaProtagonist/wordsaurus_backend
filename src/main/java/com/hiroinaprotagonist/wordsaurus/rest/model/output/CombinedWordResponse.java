@@ -19,5 +19,5 @@ public class CombinedWordResponse {
     private String search;
     private List<MWOutputThesRes> words;
     private List<RBOutputRhymeRes> rhymes;
-    private List<>
+//    private List<>
 }

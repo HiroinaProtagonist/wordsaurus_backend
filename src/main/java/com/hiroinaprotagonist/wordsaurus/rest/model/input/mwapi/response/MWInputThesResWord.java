@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record MWThesaurusWord(
+public record MWInputThesResWord(
         Meta meta,
         Integer hom,
         Hwi hwi,

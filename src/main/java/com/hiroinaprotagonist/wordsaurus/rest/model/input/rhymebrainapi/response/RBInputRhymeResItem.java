@@ -6,13 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 import static java.util.Objects.isNull;
 
 @Builder
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RBInputRhymeResItem {
     private String word;
     private Integer freq;
@@ -41,8 +43,8 @@ public class RBInputRhymeResItem {
 
     public RBInputRhymeResItem setFlagVariables() {
         this.isOffensive = this.flagIsOffensive();
-        this.isDictionaryWord = this.flagIsDictionaryWord();
-        this.isKnownPronunciation = this.flagIsKnownPronunciation();
+        this.isDictionaryWord = Optional.of(this.flagIsDictionaryWord()).get();
+        this.isKnownPronunciation = Optional.of(this.flagIsKnownPronunciation()).get();
         return this;    //for use in map in RhymeBrainController, can't return void
     }
 }

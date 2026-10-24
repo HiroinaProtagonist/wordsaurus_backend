@@ -1,9 +1,12 @@
 package com.hiroinaprotagonist.wordsaurus.rest.service;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.converter.MWtoResMapper;
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWInputThesResWord;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesRes;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesResWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWShortOutputThesRes;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWShortOutputThesResWord;
+import com.hiroinaprotagonist.wordsaurus.utility.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +29,8 @@ public class WordService {
     public WordService(RestClient restClient) {
         this.restClient = restClient;
     }
+
+    ObjectMapper objectMapper = JsonUtil.getObjectMapper();
 
     @Value("${mw.urls.base.collegiate.url}")
     private String collegiateBaseUrl;
@@ -54,7 +60,7 @@ public class WordService {
     public List<MWOutputThesRes> getWordFromCollegiate(@RequestParam String word) {
         List<MWOutputThesResWord> outputWords = Collections.emptyList();
 
-        ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
+        ResponseEntity<List<MWInputThesResWord>> response = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme(mWScheme)
                         .host(mWHost)
@@ -86,11 +92,55 @@ public class WordService {
                 .build());
     }
 
+    @Cacheable(value = "shortWordFromThesaurus", key="#word")
+    public List<MWShortOutputThesRes> getShortWordFromThesaurus(@RequestParam String word) {
+        List<MWShortOutputThesResWord> outputWords = Collections.emptyList();
+
+        ResponseEntity<List<MWInputThesResWord>> response = restClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .scheme(mWScheme)
+                        .host(mWHost)
+                        .path(thesaurusPath + word)
+                        .queryParam("key", thesaurusKey)
+                        .build()
+                )
+                .headers(headers -> {})
+                .retrieve()
+                .toEntity(new ParameterizedTypeReference<>(){});
+
+        try {
+//            log.info("Word Res: {}", objectMapper.writeValueAsString(response));
+
+            if (Objects.nonNull(response.getBody())) {
+//                log.info("Def print: {}", objectMapper.writeValueAsString(response.getBody().get(0).def()));
+
+                outputWords = response.getBody()
+                        .stream()
+                        .map(MWtoResMapper.MAPPER_INSTANCE::mwToShortResMapper)
+                        .toList();
+
+//                log.info("Word Res after mapping: {}",
+//                        objectMapper.writeValueAsString(response));
+
+//                log.info("Def print: {}", (Object) response.getBody().get(0).def());
+
+            }
+        } catch (Exception e) {
+            log.error("Error encountered: {}", e.getMessage());
+        }
+
+        return List.of(MWShortOutputThesRes
+                .builder()
+                .search(word)
+                .words(outputWords)
+                .build());
+    }
+
     @Cacheable(value = "wordFromThesaurus", key="#word")
     public List<MWOutputThesRes> getWordFromThesaurus(@RequestParam String word) {
         List<MWOutputThesResWord> outputWords = Collections.emptyList();
 
-        ResponseEntity<List<MWThesaurusWord>> response = restClient.get()
+        ResponseEntity<List<MWInputThesResWord>> response = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme(mWScheme)
                         .host(mWHost)
@@ -104,13 +154,20 @@ public class WordService {
 
 
         try {
-            log.info("Res: {}", response);
+            log.info("Word Res: {}", objectMapper.writeValueAsString(response));
 
             if (Objects.nonNull(response.getBody())) {
+//                log.info("Def print: {}", objectMapper.writeValueAsString(response.getBody().get(0).def()));
+
                 outputWords = response.getBody()
                         .stream()
                         .map(MWtoResMapper.MAPPER_INSTANCE::mwToResMapper)
                         .toList();
+
+                log.info("Word Res after mapping: {}",
+                        objectMapper.writeValueAsString(response));
+
+//                log.info("Def print: {}", (Object) response.getBody().get(0).def());
 
             }
         } catch (Exception e) {

@@ -2,17 +2,16 @@ package com.hiroinaprotagonist.wordsaurus.data;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.converter.MWtoResMapper;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.Hwi;
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWThesaurusWord;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.MWInputThesResWord;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.Meta;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.mwapi.response.meta.MWTarget;
-import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.converter.RBtoResMapper;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBInputRhymeResItem;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesRes;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.mwapi.response.MWOutputThesResWord;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeRes;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBOutputRhymeResItem;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.RBShortOutputRhymeResItem;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +20,7 @@ public class TestData {
     //TEST WORDS
     public static final String PANTS = "pants";
     public static final String OBFUSCATE = "obfuscate";
+    public static final String HOP = "hop";
 
     //MW Constants
     public static final String SHORT_DEFINITION_STRING = "short definition string";
@@ -98,8 +98,8 @@ public class TestData {
                 .build();
     }
 
-    public static MWThesaurusWord getInputMWThesaurusWord() {
-        return MWThesaurusWord
+    public static MWInputThesResWord getInputMWThesaurusWord() {
+        return MWInputThesResWord
                 .builder()
                 .meta(getMWMeta())
                 .hwi(getHwi())
@@ -109,13 +109,13 @@ public class TestData {
                 .build();
     }
 
-    public static List<MWThesaurusWord> getInputMWThesaurusWordList() {
+    public static List<MWInputThesResWord> getInputMWThesaurusWordList() {
         return Arrays.asList(getInputMWThesaurusWord(),
                 getInputMWThesaurusWord());
     }
 
-    public static MWThesaurusWord getInputMWThesaurusWordShortDefNull() {
-        return MWThesaurusWord
+    public static MWInputThesResWord getInputMWThesaurusWordShortDefNull() {
+        return MWInputThesResWord
                 .builder()
                 .meta(getMWMeta())
                 .hwi(getHwi())
@@ -124,8 +124,8 @@ public class TestData {
                 .build();
     }
 
-    public static MWThesaurusWord getInputMWThesaurusWordMetaNull() {
-        return MWThesaurusWord
+    public static MWInputThesResWord getInputMWThesaurusWordMetaNull() {
+        return MWInputThesResWord
                 .builder()
                 .meta(null)
                 .hwi(getHwi())
@@ -174,7 +174,6 @@ public class TestData {
                 .build();
     }
 
-    //RB Input
     public static RBInputRhymeResItem getRBRhymeResItemVariablesSet() {
         RBInputRhymeResItem item = RBInputRhymeResItem
                 .builder()
@@ -193,6 +192,20 @@ public class TestData {
     }
 
     //RB Output
+    public static RBOutputRhymeRes getRBOutputRhymeRes() {
+        return RBOutputRhymeRes
+                .builder()
+                .search(WORD)
+                .rhymes(getRBOutputRhymeResItemList())
+                .build();
+    }
+
+    //RB Service Rhymes output
+    public static List<RBOutputRhymeRes> getRBOutputRhymeResList() {
+        return Arrays.asList(getRBOutputRhymeRes(),
+                getRBOutputRhymeRes());
+    }
+
     public static RBOutputRhymeResItem getRhymeBrainOutputResItem() {
         return RBOutputRhymeResItem
                 .builder()
@@ -211,18 +224,14 @@ public class TestData {
                 getRhymeBrainOutputResItem());
     }
 
-    public static RBOutputRhymeRes getRBOutputRhymeRes() {
-        return RBOutputRhymeRes
+    //RB short output
+    public static RBShortOutputRhymeResItem getRBShortOutputRhymeResItem() {
+        return RBShortOutputRhymeResItem
                 .builder()
-                .search(WORD)
-                .rhymes(getRBOutputRhymeResItemList())
+                .word(WORD)
+                .freq(HIGH_FREQ)
+                .score(HIGH_SCORE)
+                .isOffensive(true)
                 .build();
     }
-
-    //RB Service Rhymes output
-    public static List<RBOutputRhymeRes> getRBOutputRhymeResList() {
-        return Arrays.asList(getRBOutputRhymeRes(),
-                getRBOutputRhymeRes());
-    }
-
 }

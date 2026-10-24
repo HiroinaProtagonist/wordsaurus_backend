@@ -3,6 +3,7 @@ package com.hiroinaprotagonist.wordsaurus;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.CombinedController;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.RhymeBrainController;
 import com.hiroinaprotagonist.wordsaurus.rest.controller.WordController;
+import com.hiroinaprotagonist.wordsaurus.rest.model.output.CombinedShortWordResponse;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.CombinedWordResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
@@ -35,21 +36,28 @@ public class WordsaurusApplication
 
 	@Override
 	public void run(String @NonNull ... args) throws Exception {
-		String testWord = "fast";
+//		String testWord = "hop";
+//		String testWord = "obfuscate";
+//		String testWord = "fast";
+		String testWord = "legitimize";
+
+//		ResponseEntity<List<MWThesRes>> thesRes = wordController
+//				.getWordDataFromCollegiate(testWord);
+//		log.info("Dictionary res from word controller: {}", thesRes);
+
+//		ResponseEntity<List<MWThesRes>> collRes = wordController
+//				.getWordDataFromThesaurus(testWord);
+//		log.info("Thesaurus res from word controller: {}", collRes);
 //
-////		ResponseEntity<List<MWThesRes>> thesRes = wordController
-////				.getWordDataFromCollegiate(testWord);
-////		log.info("Dictionary res from word controller: {}", thesRes);
-//
-////		ResponseEntity<List<MWThesRes>> collRes = wordController
-////				.getWordDataFromThesaurus(testWord);
-////		log.info("Thesaurus res from word controller: {}", collRes);
-////
-////		ResponseEntity<List<RhymeBrainOutputRes>> rbRes = rhymeBrainController
-////				.getRhymesFromRB(testWord);
-////		log.info("Rhymes returned from RhymeBrain controller: {}", rbRes);
-//
+//		ResponseEntity<List<RhymeBrainOutputRes>> rbRes = rhymeBrainController
+//				.getRhymesFromRB(testWord);
+//		log.info("Rhymes returned from RhymeBrain controller: {}", rbRes);
+
 //		ResponseEntity<CombinedWordResponse> combiRes = combinedController.getCombinedResponse(testWord);
 //		log.info("Combined results returned for {}: {}", testWord, combiRes);
+
+		ResponseEntity<CombinedShortWordResponse> combiResShort = combinedController
+				.getCombinedShortResponse(testWord);
+		log.info("Combined results returned for {}: {}", testWord, combiResShort);
 	}
 }

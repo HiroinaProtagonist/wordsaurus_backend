@@ -23,6 +23,11 @@ public class MWOutputThesResWord {
     private String[][] antonyms;
     private String[][] rhyming;
 
-    private String offensive;
+//    private String[][] syn_list;
+//    private String[][] rel_list;
+//    private String[][] near_list;
+//    private String[][] ant_list;
+
+    private Boolean offensive;
     private Hwi hwi;
 }
