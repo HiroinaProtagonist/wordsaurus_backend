@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.hiroinaprotagonist.wordsaurus.utility.ErrorUtil.handleErrorWithLog;
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api/wordsaurus")
@@ -43,6 +44,7 @@ public class CombinedController {
     public ResponseEntity<CombinedShortWordResponse> getCombinedShortResponse(
             @PathVariable String words) throws ExecutionException, InterruptedException {
         CombinedShortWordResponse output = new CombinedShortWordResponse(words, null, null);
+        List<String> wordsToRhyme;
 
         log.info("Get combined results for {}", words);
 
@@ -55,18 +57,10 @@ public class CombinedController {
             List<MWShortOutputThesRes> currentWords = futureWords.get();
             output.setWords(currentWords);
 
-            //TODO get all distinct words that were found in words words.meta.id to get lists of rhymes for all of them
-            List<String> wordsToRhyme = currentWords.stream()
-                    .map(c->c.getWords().stream()
-                            .map(w -> w.getMetaId()).toList().toString())
-                            .toList();
-
-            Callable<List<RBShortOutputRhymeRes>> rhymeCall = () ->
-                    rhymeBrainService.getShortRhymes(wordsToRhyme.toArray(String[]::new));
-
-            Future<List<RBShortOutputRhymeRes>> rhymes = getFuture(rhymeCall);
-            output.setRhymes(rhymes.get());
-
+            wordsToRhyme = currentWords
+                    .stream().map(c->c.getWords()
+                            .stream().map(MWShortOutputThesResWord::getMetaId)
+                            .toList()).flatMap(List::stream).distinct().toList();
 
         } catch (ExecutionException | InterruptedException e) {
             handleErrorWithLog(log, e);
@@ -74,6 +68,12 @@ public class CombinedController {
             //TODO check this error handling
             return ResponseEntity.internalServerError().build();
         }
+
+        Callable<List<RBShortOutputRhymeRes>> rhymeCall = () ->
+                rhymeBrainService.getShortRhymes(wordsToRhyme.toArray(String[]::new));
+
+        Future<List<RBShortOutputRhymeRes>> rhymes = getFuture(rhymeCall);
+        output.setRhymes(rhymes.get());
 
         log.info("Combined short results: {}", objectMapper.writeValueAsString(output));
         return ResponseEntity.ok(output);

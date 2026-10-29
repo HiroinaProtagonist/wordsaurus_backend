@@ -36,10 +36,10 @@ public class WordsaurusApplication
 
 	@Override
 	public void run(String @NonNull ... args) throws Exception {
-//		String testWord = "hop";
+		String testWord = "hop";
 //		String testWord = "obfuscate";
 //		String testWord = "fast";
-		String testWord = "legitimize";
+//		String testWord = "legitimize";
 
 //		ResponseEntity<List<MWThesRes>> thesRes = wordController
 //				.getWordDataFromCollegiate(testWord);

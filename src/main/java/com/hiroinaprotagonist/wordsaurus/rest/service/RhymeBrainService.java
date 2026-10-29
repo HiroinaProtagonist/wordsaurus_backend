@@ -1,6 +1,7 @@
 package com.hiroinaprotagonist.wordsaurus.rest.service;
 
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.converter.RBtoResMapper;
+import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBInputRhymeRes;
 import com.hiroinaprotagonist.wordsaurus.rest.model.input.rhymebrainapi.response.RBInputRhymeResItem;
 import com.hiroinaprotagonist.wordsaurus.rest.model.output.rhymebrainapi.response.*;
 import lombok.extern.slf4j.Slf4j;
@@ -66,28 +67,26 @@ public class RhymeBrainService {
 
 //    @Cacheable(value = "short_rhymes", key="#word")
     public List<RBShortOutputRhymeRes> getShortRhymes(String... words) {
+        List<RBShortOutputRhymeRes> output = new LinkedList<>();
 
         //create a thread -> future for each word
         //call getShortRhyme for each thread
-        List<Future<RBShortOutputRhymeRes>> output =
+        List<Future<RBShortOutputRhymeRes>> futures =
                 Arrays.stream(words)
                         .map(this::makeGetRhymeThread)
                                 .toList();
 
         //join threads
-        List<RBShortOutputRhymeRes> rhymesList = output
-                .stream().parallel().map(r -> {
+        futures
+                .stream().forEach(r -> {
                     try {
-                        return r.get();
-                    } catch (InterruptedException|ExecutionException e) {
+                        output.add(r.get());
+                    } catch (InterruptedException | ExecutionException e) {
                         handleErrorWithLog(log, e);
-
-                        //TODO check this error handling
-                        return ResponseEntity.internalServerError().build();
                     }
                 });
 
-        return rhymesList;
+        return output;
     }
 
     //Gets short rhymes for all words returned from word service
